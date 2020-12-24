@@ -1,35 +1,35 @@
 package usecase
 
-// TestcaseStruct ..
-type TestcaseStruct struct {
-	Number     int    `json:"number"`
-	Name       string `json:"name"`
-	ExpectData Expect `json:"expect"`
+// Customer ..
+type Customer struct {
+	ID   int
+	Name string
 }
 
-// Expect ..
-type Expect struct {
-	ID int `json:"id"`
+// Usecases ..
+type Usecases interface {
+	GetFirstCustomer(id int) (Customer, error)
+}
+
+// CustomerRepository ..
+type CustomerRepository interface {
+	First(id int) (Customer, error)
 }
 
 // Usecase ..
-type Usecase interface {
-	TestNaja(TestcaseStruct) Expect
-}
-
-// CaseUsecase ..
-type CaseUsecase struct {
-	usecase Usecase
+type Usecase struct {
+	repo CustomerRepository
 }
 
 // NewUsecase ..
-func NewUsecase(usecase Usecase) *CaseUsecase {
-	return &CaseUsecase{
-		usecase: usecase,
+func NewUsecase(repo CustomerRepository) Usecases {
+	return &Usecase{
+		repo: repo,
 	}
 }
 
-// TestNaja ..
-func (uc *CaseUsecase) TestNaja(testcaseStruct TestcaseStruct) Expect {
-	return uc.TestNaja(testcaseStruct)
+// GetFirstCustomer ..
+func (uc *Usecase) GetFirstCustomer(id int) (Customer, error) {
+	customer, err := uc.repo.First(id)
+	return customer, err
 }

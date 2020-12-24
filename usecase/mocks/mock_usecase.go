@@ -10,39 +10,78 @@ import (
 	usecase "unit-test-with-clean/usecase"
 )
 
-// MockUsecase is a mock of Usecase interface
-type MockUsecase struct {
+// MockUsecases is a mock of Usecases interface
+type MockUsecases struct {
 	ctrl     *gomock.Controller
-	recorder *MockUsecaseMockRecorder
+	recorder *MockUsecasesMockRecorder
 }
 
-// MockUsecaseMockRecorder is the mock recorder for MockUsecase
-type MockUsecaseMockRecorder struct {
-	mock *MockUsecase
+// MockUsecasesMockRecorder is the mock recorder for MockUsecases
+type MockUsecasesMockRecorder struct {
+	mock *MockUsecases
 }
 
-// NewMockUsecase creates a new mock instance
-func NewMockUsecase(ctrl *gomock.Controller) *MockUsecase {
-	mock := &MockUsecase{ctrl: ctrl}
-	mock.recorder = &MockUsecaseMockRecorder{mock}
+// NewMockUsecases creates a new mock instance
+func NewMockUsecases(ctrl *gomock.Controller) *MockUsecases {
+	mock := &MockUsecases{ctrl: ctrl}
+	mock.recorder = &MockUsecasesMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockUsecase) EXPECT() *MockUsecaseMockRecorder {
+func (m *MockUsecases) EXPECT() *MockUsecasesMockRecorder {
 	return m.recorder
 }
 
-// TestNaja mocks base method
-func (m *MockUsecase) TestNaja(arg0 usecase.TestcaseStruct) usecase.Expect {
+// GetFirstCustomer mocks base method
+func (m *MockUsecases) GetFirstCustomer(id int) (usecase.Customer, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "TestNaja", arg0)
-	ret0, _ := ret[0].(usecase.Expect)
-	return ret0
+	ret := m.ctrl.Call(m, "GetFirstCustomer", id)
+	ret0, _ := ret[0].(usecase.Customer)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
-// TestNaja indicates an expected call of TestNaja
-func (mr *MockUsecaseMockRecorder) TestNaja(arg0 interface{}) *gomock.Call {
+// GetFirstCustomer indicates an expected call of GetFirstCustomer
+func (mr *MockUsecasesMockRecorder) GetFirstCustomer(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TestNaja", reflect.TypeOf((*MockUsecase)(nil).TestNaja), arg0)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFirstCustomer", reflect.TypeOf((*MockUsecases)(nil).GetFirstCustomer), id)
+}
+
+// MockCustomerRepository is a mock of CustomerRepository interface
+type MockCustomerRepository struct {
+	ctrl     *gomock.Controller
+	recorder *MockCustomerRepositoryMockRecorder
+}
+
+// MockCustomerRepositoryMockRecorder is the mock recorder for MockCustomerRepository
+type MockCustomerRepositoryMockRecorder struct {
+	mock *MockCustomerRepository
+}
+
+// NewMockCustomerRepository creates a new mock instance
+func NewMockCustomerRepository(ctrl *gomock.Controller) *MockCustomerRepository {
+	mock := &MockCustomerRepository{ctrl: ctrl}
+	mock.recorder = &MockCustomerRepositoryMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockCustomerRepository) EXPECT() *MockCustomerRepositoryMockRecorder {
+	return m.recorder
+}
+
+// First mocks base method
+func (m *MockCustomerRepository) First(id int) (usecase.Customer, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "First", id)
+	ret0, _ := ret[0].(usecase.Customer)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// First indicates an expected call of First
+func (mr *MockCustomerRepositoryMockRecorder) First(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "First", reflect.TypeOf((*MockCustomerRepository)(nil).First), id)
 }

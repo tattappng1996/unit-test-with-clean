@@ -1,47 +1,44 @@
 package usecase_test
 
 import (
+	"errors"
 	"testing"
-	"unit-test-with-clean/usecase"
+	. "unit-test-with-clean/usecase"
 	"unit-test-with-clean/usecase/mocks"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestEiei(t *testing.T) {
-	testcases := []usecase.TestcaseStruct{
-		usecase.TestcaseStruct{
-			Number: 1,
-			Name:   "eiei1",
-			ExpectData: usecase.Expect{
-				ID: 1,
-			},
-		},
-		usecase.TestcaseStruct{
-			Number: 2,
-			Name:   "eiei2",
-			ExpectData: usecase.Expect{
-				ID: 2,
-			},
-		},
-	}
+func TestGetFirstCustomerSuccess(t *testing.T) {
+	expected := Customer{ID: 1, Name: "John"}
 
-	for _, tc := range testcases {
-		t.Run(tc.Name, func(tt *testing.T) {
-			assert := assert.New(tt)
-			ctrl := gomock.NewController(tt)
-			defer ctrl.Finish()
+	assert := assert.New(t)
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 
-			m := mocks.NewMockUsecase(ctrl)
-			m.EXPECT().TestNaja(tc).Return(usecase.Expect{}, nil).Times(1)
+	m := mocks.NewMockCustomerRepository(ctrl)
 
-			u := usecase.NewUsecase(m)
-			expectData := u.TestNaja(tc)
+	m.EXPECT().First(1).Return(Customer{ID: 1, Name: "John"}, nil).Times(1)
 
-			assert.Equal(usecase.Expect{
-				ID: tc.Number,
-			}, expectData)
-		})
-	}
+	u := NewUsecase(m)
+	output, _ := u.GetFirstCustomer(1)
+
+	assert.Equal(expected, output)
+}
+
+func TestGetFirstCustomerError(t *testing.T) {
+	assert := assert.New(t)
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	m := mocks.NewMockCustomerRepository(ctrl)
+
+	dummyErrExpected := errors.New("404 user not found")
+	m.EXPECT().First(1).Return(Customer{}, dummyErrExpected).Times(1)
+
+	u := NewUsecase(m)
+	_, err := u.GetFirstCustomer(1)
+
+	assert.EqualError(err, dummyErrExpected.Error())
 }
