@@ -7,7 +7,7 @@ package mocks
 import (
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
-	usecase "unit-test-with-clean/usecase"
+	dto "unit-test-with-clean/dto"
 )
 
 // MockUsecases is a mock of Usecases interface
@@ -34,10 +34,10 @@ func (m *MockUsecases) EXPECT() *MockUsecasesMockRecorder {
 }
 
 // GetFirstCustomer mocks base method
-func (m *MockUsecases) GetFirstCustomer(id int) (usecase.Customer, error) {
+func (m *MockUsecases) GetFirstCustomer(id int) (dto.Customer, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetFirstCustomer", id)
-	ret0, _ := ret[0].(usecase.Customer)
+	ret0, _ := ret[0].(dto.Customer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -72,10 +72,10 @@ func (m *MockCustomerRepository) EXPECT() *MockCustomerRepositoryMockRecorder {
 }
 
 // First mocks base method
-func (m *MockCustomerRepository) First(id int) (usecase.Customer, error) {
+func (m *MockCustomerRepository) First(id int) (dto.Customer, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "First", id)
-	ret0, _ := ret[0].(usecase.Customer)
+	ret0, _ := ret[0].(dto.Customer)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

@@ -1,19 +1,15 @@
 package usecase
 
-// Customer ..
-type Customer struct {
-	ID   int
-	Name string
-}
+import "unit-test-with-clean/dto"
 
 // Usecases ..
 type Usecases interface {
-	GetFirstCustomer(id int) (Customer, error)
+	GetFirstCustomer(id int) (dto.Customer, error)
 }
 
 // CustomerRepository ..
 type CustomerRepository interface {
-	First(id int) (Customer, error)
+	First(id int) (dto.Customer, error)
 }
 
 // Usecase ..
@@ -29,7 +25,7 @@ func NewUsecase(repo CustomerRepository) Usecases {
 }
 
 // GetFirstCustomer ..
-func (uc *Usecase) GetFirstCustomer(id int) (Customer, error) {
+func (uc *Usecase) GetFirstCustomer(id int) (dto.Customer, error) {
 	customer, err := uc.repo.First(id)
 	return customer, err
 }
